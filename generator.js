@@ -9,7 +9,7 @@ function sendMsg(msg)
   console.log(msg)
   if(exchange)
   {  
-    
+
     exchange.publish('key.a',msg)
 
   }
@@ -38,7 +38,7 @@ var rabbitMQ = amqp.createConnection({ host: '127.0.0.1' });
 rabbitMQ.addListener('ready', function(){
   
   // create the exchange if it doesnt exist
-  exchange = rabbitMQ.exchange('rabbitExchange')
+  exchange = rabbitMQ.exchange('rabbitExchange',{'type':'fanout'})
 
 });  
 

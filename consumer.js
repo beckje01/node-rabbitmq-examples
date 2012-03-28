@@ -3,12 +3,13 @@ var http = require('http'),
   amqp = require('amqp');
 
 
-var rabbitMQ = amqp.createConnection({ host: '127.0.0.1' },{defaultExchangeName: "rabbitExchange"});
+var rabbitMQ = amqp.createConnection({ host: '127.0.0.1' });
 
 rabbitMQ.addListener('ready', function(){
-  var queue = rabbitMQ.queue('rabbitQ', function(q){
-      // Catch all messages
-      q.bind('rabbitExchange','key.a');
+  var queue = rabbitMQ.queue('',{'exclusive':true}, function(q){
+
+      //get all messages for the rabbitExchange
+      q.bind('rabbitExchange','#');
       console.log("inqueue")
       // Receive messages
       q.subscribe(function (message) {
@@ -17,7 +18,5 @@ rabbitMQ.addListener('ready', function(){
         console.log(message.data.toString());
       });
     });
-  // create the exchange if it doesnt exist
-  //var exchange = rabbitMQ.exchange('rabbitExchange')
 
 });  
